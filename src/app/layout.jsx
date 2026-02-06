@@ -4,7 +4,7 @@ import Script from "next/script";
 import { Analytics } from "@vercel/analytics/react";
 import JsonLd from "./components/JsonLd";
 import SiteFooter from "./components/SiteFooter";
-import PromoBanner from "./components/PromoBanner";
+// import PromoBanner from "./components/PromoBanner";
 import GA4Tracker from "./components/GA4Tracker";
 import { Suspense } from "react";
 import {
@@ -96,7 +96,7 @@ function PrimaryButton({ href, children, className = "" }) {
 function SiteHeader() {
   return (
     <div className="sticky top-0 z-50">
-      <PromoBanner href={BOOKING_URL} />
+      {/* <PromoBanner href={BOOKING_URL} /> */}
 
       {/* ✅ SOLID WHITE, NO BORDER, NO BLUR */}
       <header className="bg-white">
@@ -115,7 +115,7 @@ function SiteHeader() {
 
             <div className="flex items-center gap-3 sm:gap-4">
               <PrimaryButton
-                href={BOOKING_URL}
+                href="https://booking.greatamericanlabor.com/"
                 className="shrink-0 text-base sm:text-lg px-6 sm:px-8 lg:px-9 py-3 sm:py-3.5"
               >
                 For Businesses
