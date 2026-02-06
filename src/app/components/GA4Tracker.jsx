@@ -1,25 +1,50 @@
 "use client";
 
-import { useEffect, useRef } from "react";
-import { usePathname } from "next/navigation";
+import { useEffect, useMemo, useRef } from "react";
+import { usePathname, useSearchParams } from "next/navigation";
 
 export default function GA4Tracker({ gaId }) {
   const pathname = usePathname();
-  const lastUrlRef = useRef("");
+  const searchParams = useSearchParams();
+  const lastPathRef = useRef("");
+
+  const qs = useMemo(() => (searchParams ? searchParams.toString() : ""), [searchParams]);
+  const pagePath = useMemo(() => (qs ? `${pathname}?${qs}` : pathname), [pathname, qs]);
 
   useEffect(() => {
     if (!gaId) return;
     if (typeof window === "undefined") return;
 
-    const qs = (window.location.search || "").replace(/^\?/, "");
-    const url = qs ? `${pathname}?${qs}` : pathname;
+    // Prevent duplicates
+    if (pagePath === lastPathRef.current) return;
 
-    // prevent double-fire
-    if (url === lastUrlRef.current) return;
-    lastUrlRef.current = url;
+    let tries = 0;
+    const maxTries = 10;
 
-    window.gtag?.("event", "page_view", { page_path: url });
-  }, [gaId, pathname]);
+    const send = () => {
+      // gtag should exist because your ga4-init defines it,
+      // but this guards against first-load races.
+      if (typeof window.gtag !== "function") return false;
+
+      window.gtag("config", gaId, {
+        page_path: pathname,               // keep reports clean (no UTMs here)
+        page_location: window.location.href, // full URL includes query/UTMs
+        page_title: document.title,
+      });
+
+      lastPathRef.current = pagePath;
+      return true;
+    };
+
+    if (send()) return;
+
+    const t = setInterval(() => {
+      tries += 1;
+      if (send() || tries >= maxTries) clearInterval(t);
+    }, 250);
+
+    return () => clearInterval(t);
+  }, [gaId, pagePath, pathname]);
 
   return null;
 }
