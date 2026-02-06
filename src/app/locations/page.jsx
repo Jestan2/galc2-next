@@ -2,7 +2,7 @@
 
 import React from "react";
 import Link from "next/link";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { SERVICES, METROS } from "../lib/seo/siteData";
 import {
   FiMapPin,
@@ -107,7 +107,6 @@ function iconForServiceSlug(slug) {
 /* -------------------- Page -------------------- */
 export default function LocationsPage() {
   const router = useRouter();
-  const searchParams = useSearchParams();
 
   // Build metro list + derived states + featured picks
   const { metroList, states, featuredMetros } = React.useMemo(() => {
@@ -166,10 +165,18 @@ export default function LocationsPage() {
   const [serviceSlug, setServiceSlug] = React.useState(defaultServiceSlug);
 
   React.useEffect(() => {
-    const fromUrl = (searchParams?.get("service") || "").trim();
-    if (fromUrl && SERVICES?.[fromUrl]) setServiceSlug(fromUrl);
-    else setServiceSlug(defaultServiceSlug);
-  }, [searchParams, defaultServiceSlug]);
+    const read = () => {
+      const sp = new URLSearchParams(window.location.search || "");
+      const fromUrl = (sp.get("service") || "").trim();
+
+      if (fromUrl && SERVICES?.[fromUrl]) setServiceSlug(fromUrl);
+      else setServiceSlug(defaultServiceSlug);
+    };
+
+    read();
+    window.addEventListener("popstate", read);
+    return () => window.removeEventListener("popstate", read);
+  }, [defaultServiceSlug]);
 
   const setServiceFromUI = React.useCallback(
     (nextSlug) => {
@@ -177,12 +184,13 @@ export default function LocationsPage() {
 
       setServiceSlug(nextSlug);
 
-      const sp = new URLSearchParams(searchParams?.toString() || "");
+      const sp = new URLSearchParams(window.location.search || "");
       sp.set("service", nextSlug);
       const qs = sp.toString();
-      router.replace(qs ? `?${qs}` : "?", { scroll: false });
+
+      router.replace(qs ? `?${qs}` : "/locations", { scroll: false });
     },
-    [router, searchParams]
+    [router]
   );
 
   const selectedServiceName = React.useMemo(() => {

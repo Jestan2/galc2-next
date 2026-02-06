@@ -1,22 +1,25 @@
 "use client";
 
-import { useEffect } from "react";
-import { usePathname, useSearchParams } from "next/navigation";
+import { useEffect, useRef } from "react";
+import { usePathname } from "next/navigation";
 
 export default function GA4Tracker({ gaId }) {
   const pathname = usePathname();
-  const searchParams = useSearchParams();
+  const lastUrlRef = useRef("");
 
   useEffect(() => {
     if (!gaId) return;
+    if (typeof window === "undefined") return;
 
-    const qs = searchParams?.toString();
+    const qs = (window.location.search || "").replace(/^\?/, "");
     const url = qs ? `${pathname}?${qs}` : pathname;
 
-    window.gtag?.("event", "page_view", {
-      page_path: url,
-    });
-  }, [gaId, pathname, searchParams]);
+    // prevent double-fire
+    if (url === lastUrlRef.current) return;
+    lastUrlRef.current = url;
+
+    window.gtag?.("event", "page_view", { page_path: url });
+  }, [gaId, pathname]);
 
   return null;
 }

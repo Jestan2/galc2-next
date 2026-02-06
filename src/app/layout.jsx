@@ -6,6 +6,7 @@ import JsonLd from "./components/JsonLd";
 import SiteFooter from "./components/SiteFooter";
 import PromoBanner from "./components/PromoBanner";
 import GA4Tracker from "./components/GA4Tracker";
+import { Suspense } from "react";
 import {
   BOOKING_URL,
   PHONE_DISPLAY,
@@ -181,8 +182,10 @@ export default function RootLayout({ children }) {
       </head>
 
       <body className="min-h-screen bg-white text-slate-900 antialiased selection:bg-rose-100 selection:text-slate-900">
-        {/* GA4 route-change pageviews */}
+      {/* GA4 route-change pageviews */}
+      <Suspense fallback={null}>
         <GA4Tracker gaId={GA_ID} />
+      </Suspense>
 
         <JsonLd data={siteJsonLd} />
         <SiteHeader />
