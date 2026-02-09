@@ -113,14 +113,29 @@ function SiteHeader() {
               />
             </Link>
 
-            <div className="flex items-center gap-3 sm:gap-4">
-              <PrimaryButton
-                href="https://booking.greatamericanlabor.com/"
-                className="shrink-0 text-base sm:text-lg px-6 sm:px-8 lg:px-9 py-3 sm:py-3.5"
-              >
-                For Businesses
-              </PrimaryButton>
-            </div>
+        <div className="flex items-center gap-2 sm:gap-3">
+          <a
+            href={`tel:${PHONE_TEL}`}
+            className={[
+              "inline-flex items-center justify-center rounded-full font-semibold transition",
+              "px-6 sm:px-8 lg:px-9 py-3 sm:py-3.5",
+              "text-base sm:text-lg",
+              "shrink-0 whitespace-nowrap",
+              "bg-white text-slate-900 border border-slate-200 hover:bg-slate-50 hover:border-slate-300",
+              "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rose-600 focus-visible:ring-offset-2 focus-visible:ring-offset-white",
+            ].join(" ")}
+            aria-label={`Call ${PHONE_DISPLAY}`}
+          >
+            Call {PHONE_DISPLAY}
+          </a>
+
+          <PrimaryButton
+            href="https://booking.greatamericanlabor.com/"
+            className="shrink-0 text-base sm:text-lg px-6 sm:px-8 lg:px-9 py-3 sm:py-3.5 whitespace-nowrap"
+          >
+            For Businesses
+          </PrimaryButton>
+        </div>
           </div>
         </div>
       </header>

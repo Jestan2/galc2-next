@@ -40,7 +40,7 @@ import {
   FiTool,
 } from "react-icons/fi";
 
-const BOOKING_URL = "https://book.greatamericanlabor.com/";
+const BOOKING_URL = "https://booking.greatamericanlabor.com/";
 const PHONE_DISPLAY = "(888) 270-8355";
 const PHONE_TEL = "+18882708355";
 

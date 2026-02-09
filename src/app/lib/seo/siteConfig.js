@@ -1,7 +1,7 @@
 //siteConfig.js
 export const SITE_URL = "https://greatamericanlabor.com"; // marketing domain
 export const BRAND_NAME = "Great American Labor Co.";
-export const BOOKING_URL = "https://book.greatamericanlabor.com/";
+export const BOOKING_URL = "https://booking.greatamericanlabor.com/";
 
 export const PHONE_DISPLAY = "(888) 270-8355";
 export const PHONE_TEL = "+18882708355";
