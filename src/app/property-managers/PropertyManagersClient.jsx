@@ -261,7 +261,11 @@ export default function PropertyManagersClient() {
         <div className="grid gap-10 lg:grid-cols-[1fr_440px] lg:items-start">
           {/* LEFT */}
           <div className="pt-2">
-            <div className="inline-flex items-center gap-2 rounded-full bg-green-50 px-3 py-1.5 text-xs font-bold text-green-700">
+            <div className="font-mono text-[11px] font-semibold uppercase tracking-[0.25em] text-neutral-500">
+              Property Management Solutions
+            </div>
+
+            <div className="mt-3 inline-flex items-center gap-2 rounded-full bg-green-50 px-3 py-1.5 text-xs font-bold text-green-700">
               <span className="h-2 w-2 animate-pulse rounded-full bg-green-600" />
               Dispatching same-day labor now
             </div>
