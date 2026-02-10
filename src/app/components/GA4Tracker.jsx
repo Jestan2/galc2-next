@@ -8,8 +8,14 @@ export default function GA4Tracker({ gaId }) {
   const searchParams = useSearchParams();
   const lastPathRef = useRef("");
 
-  const qs = useMemo(() => (searchParams ? searchParams.toString() : ""), [searchParams]);
-  const pagePath = useMemo(() => (qs ? `${pathname}?${qs}` : pathname), [pathname, qs]);
+  const qs = useMemo(
+    () => (searchParams ? searchParams.toString() : ""),
+    [searchParams]
+  );
+  const pagePath = useMemo(
+    () => (qs ? `${pathname}?${qs}` : pathname),
+    [pathname, qs]
+  );
 
   useEffect(() => {
     if (!gaId) return;
@@ -26,11 +32,18 @@ export default function GA4Tracker({ gaId }) {
       // but this guards against first-load races.
       if (typeof window.gtag !== "function") return false;
 
-      window.gtag("config", gaId, {
-        page_path: pathname,               // keep reports clean (no UTMs here)
+      const params = {
+        page_path: pathname,                 // keep reports clean (no UTMs here)
         page_location: window.location.href, // full URL includes query/UTMs
         page_title: document.title,
-      });
+      };
+
+      // Keep GA in sync with latest page metadata
+      window.gtag("config", gaId, params);
+
+      // Since you set send_page_view:false in ga4-init,
+      // explicitly send the SPA page_view.
+      window.gtag("event", "page_view", params);
 
       lastPathRef.current = pagePath;
       return true;
