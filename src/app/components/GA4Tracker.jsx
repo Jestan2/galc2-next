@@ -6,13 +6,15 @@ import { usePathname, useSearchParams } from "next/navigation";
 export default function GA4Tracker({ gaId }) {
   const pathname = usePathname();
   const searchParams = useSearchParams();
-  const lastPathRef = useRef("");
+  const lastPageRef = useRef("");
 
   const qs = useMemo(
     () => (searchParams ? searchParams.toString() : ""),
     [searchParams]
   );
-  const pagePath = useMemo(
+
+  // This is the *logical* SPA page identity (path + query)
+  const pageKey = useMemo(
     () => (qs ? `${pathname}?${qs}` : pathname),
     [pathname, qs]
   );
@@ -21,43 +23,36 @@ export default function GA4Tracker({ gaId }) {
     if (!gaId) return;
     if (typeof window === "undefined") return;
 
-    // Prevent duplicates
-    if (pagePath === lastPathRef.current) return;
+    // Prevent duplicates (e.g., React strict mode / re-renders)
+    if (pageKey === lastPageRef.current) return;
 
     let tries = 0;
-    const maxTries = 10;
+    const maxTries = 20; // give a bit more room for slow first loads
 
-    const send = () => {
-      // gtag should exist because your ga4-init defines it,
-      // but this guards against first-load races.
+    const sendPageView = () => {
       if (typeof window.gtag !== "function") return false;
 
-      const params = {
-        page_path: pathname,                 // keep reports clean (no UTMs here)
-        page_location: window.location.href, // full URL includes query/UTMs
+      window.gtag("event", "page_view", {
         page_title: document.title,
-      };
+        page_location: window.location.href, // IMPORTANT: includes UTMs
+        page_path: pathname,                 // clean path in GA
+      });
 
-      // Keep GA in sync with latest page metadata
-      window.gtag("config", gaId, params);
-
-      // Since you set send_page_view:false in ga4-init,
-      // explicitly send the SPA page_view.
-      window.gtag("event", "page_view", params);
-
-      lastPathRef.current = pagePath;
+      lastPageRef.current = pageKey;
       return true;
     };
 
-    if (send()) return;
+    // Try immediately
+    if (sendPageView()) return;
 
+    // If gtag isn't ready yet, retry briefly
     const t = setInterval(() => {
       tries += 1;
-      if (send() || tries >= maxTries) clearInterval(t);
+      if (sendPageView() || tries >= maxTries) clearInterval(t);
     }, 250);
 
     return () => clearInterval(t);
-  }, [gaId, pagePath, pathname]);
+  }, [gaId, pageKey, pathname]);
 
   return null;
 }
