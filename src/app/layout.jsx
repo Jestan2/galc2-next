@@ -6,6 +6,7 @@ import JsonLd from "./components/JsonLd";
 import SiteFooter from "./components/SiteFooter";
 // import PromoBanner from "./components/PromoBanner";
 import GA4Tracker from "./components/GA4Tracker";
+import LeadBubbleMount from "./components/LeadBubbleMount";
 import { Suspense } from "react";
 import {
   BOOKING_URL,
@@ -205,6 +206,9 @@ export default function RootLayout({ children }) {
         <JsonLd data={siteJsonLd} />
         <SiteHeader />
         {children}
+        
+        {/* ✅ Floating lead bubble + modal */}
+        <LeadBubbleMount />
         <SiteFooter />
         <Analytics />
       </body>

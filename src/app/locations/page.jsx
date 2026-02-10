@@ -22,8 +22,8 @@ import {
 const usamapImg = "/assets/usamap.webp";
 
 const BOOKING_URL = "https://book.greatamericanlabor.com/";
-const PHONE_DISPLAY = "(888) 270-8355";
-const PHONE_TEL = "+18882708355";
+const PHONE_DISPLAY = "(888) 280-1822";
+const PHONE_TEL = "+18882801822";
 
 /* -------------------- Vertical rhythm (Apple x Uber) -------------------- */
 const RHYTHM = {

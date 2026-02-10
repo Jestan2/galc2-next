@@ -3,8 +3,8 @@
 import Link from "next/link";
 import { useMemo, useState } from "react";
 
-const PHONE_DISPLAY = "(888) 270-8355";
-const PHONE_TEL = "+18882708355";
+const PHONE_DISPLAY = "(888) 280-1822";
+const PHONE_TEL = "+18882801822";
 
 const services = [
   {
@@ -163,8 +163,7 @@ export default function PropertyManagersClient() {
     company: false,
     email: false,
     phone: false,
-    city: false,
-    state: false,
+    zip: false,
     units: false,
   });
 
@@ -187,8 +186,7 @@ export default function PropertyManagersClient() {
     const company = document.getElementById("company");
     const email = document.getElementById("email");
     const phone = document.getElementById("phone");
-    const city = document.getElementById("city");
-    const state = document.getElementById("state");
+    const zip = document.getElementById("zip");
     const units = document.getElementById("units");
 
     const data = {
@@ -196,21 +194,20 @@ export default function PropertyManagersClient() {
       company: company?.value || "",
       email: email?.value || "",
       phone: phone?.value || "",
-      city: city?.value || "",
-      state: state?.value || "",
+      zip: zip?.value || "",
       units: units?.value || "",
     };
 
     const validEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.email.trim());
     const validPhone = data.phone.replace(/\D/g, "").length >= 10;
+    const validZip = /^\d{5}$/.test((data.zip || "").trim());
 
     const nextErrors = {
       fullName: data.fullName.trim().length < 2,
       company: data.company.trim().length < 2,
       email: !validEmail,
       phone: !validPhone,
-      city: data.city.trim().length < 2,
-      state: data.state === "",
+      zip: !validZip,
       units: data.units === "",
     };
 
@@ -227,8 +224,7 @@ export default function PropertyManagersClient() {
       company: false,
       email: false,
       phone: false,
-      city: false,
-      state: false,
+      zip: false,
       units: false,
     });
 
@@ -374,40 +370,14 @@ export default function PropertyManagersClient() {
                       onValueChange={(v) => formatPhone(v)}
                     />
                     <Field
-                      label="City"
-                      name="city"
-                      placeholder="San Diego"
-                      errorText="Please enter your city"
-                      showError={errors.city}
+                      label="ZIP code"
+                      name="zip"
+                      placeholder="92101"
+                      errorText="Please enter a valid ZIP code"
+                      showError={errors.zip}
+                      inputMode="numeric"
+                      onValueChange={(v) => v.replace(/\D/g, "").slice(0, 5)}
                     />
-
-                    <div>
-                      <label htmlFor="state" className="block text-xs font-bold text-neutral-800">
-                        State
-                      </label>
-                      <div className="relative mt-1">
-                        <select
-                          id="state"
-                          name="state"
-                          className="w-full appearance-none rounded-lg border border-neutral-200 bg-white px-3 py-2.5 pr-10 text-sm text-neutral-900 outline-none transition focus:border-blue-600 focus:ring-4 focus:ring-blue-600/10"
-                          defaultValue=""
-                          onChange={() => {}}
-                        >
-                          <option value="" disabled>
-                            Select
-                          </option>
-                          {states.map((s) => (
-                            <option key={s} value={s}>
-                              {s}
-                            </option>
-                          ))}
-                        </select>
-                        <ChevronIcon />
-                      </div>
-                      <div className={errors.state ? "mt-1 text-[11px] font-medium text-red-600" : "mt-1 hidden text-[11px] font-medium text-red-600"}>
-                        Please select your state
-                      </div>
-                    </div>
 
                     <div className="sm:col-span-2">
                       <label htmlFor="units" className="block text-xs font-bold text-neutral-800">
@@ -596,7 +566,7 @@ export default function PropertyManagersClient() {
   );
 }
 
-function Field({ label, name, placeholder, errorText, showError, onValueChange }) {
+function Field({ label, name, placeholder, errorText, showError, onValueChange, ...inputProps }){
   return (
     <div>
       <label htmlFor={name} className="block text-xs font-bold text-neutral-800">
@@ -607,6 +577,7 @@ function Field({ label, name, placeholder, errorText, showError, onValueChange }
         name={name}
         placeholder={placeholder}
         className="mt-1 w-full rounded-lg border border-neutral-200 bg-white px-3 py-2.5 text-sm text-neutral-900 outline-none transition focus:border-blue-600 focus:ring-4 focus:ring-blue-600/10"
+        {...inputProps}
         onChange={(e) => {
           if (onValueChange) e.target.value = onValueChange(e.target.value);
         }}
