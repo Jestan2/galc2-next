@@ -3,9 +3,8 @@
 import Link from "next/link";
 import { useMemo, useState } from "react";
 
-const PHONE_DISPLAY = "(888) 280-1822";
-const PHONE_TEL = "+18882801822";
-
+const PHONE_DISPLAY = "(888) 285-9302";
+const PHONE_TEL = "+18882859302";
 const services = [
   {
     title: "Unit Turnovers",
@@ -335,7 +334,7 @@ export default function PropertyManagersClient() {
                   <span>Limited availability — claim your free job</span>
                 </div>
 
-                <h2 className="text-lg font-extrabold leading-snug text-neutral-900">
+                <h2 className="text-xl font-extrabold leading-snug text-neutral-900">
                   Get your first 2-hour job free
                 </h2>
                 <p className="mt-1 text-sm text-neutral-600">

@@ -7,6 +7,8 @@ import SiteFooter from "./components/SiteFooter";
 // import PromoBanner from "./components/PromoBanner";
 import GA4Tracker from "./components/GA4Tracker";
 import LeadBubbleMount from "./components/LeadBubbleMount";
+import LayoutChrome from "./components/LayoutChrome";
+import ConditionalLeadBubbleMount from "./components/ConditionalLeadBubbleMount";
 import { Suspense } from "react";
 import {
   BOOKING_URL,
@@ -203,14 +205,15 @@ export default function RootLayout({ children }) {
         <GA4Tracker gaId={GA_ID} />
       </Suspense>
 
-        <JsonLd data={siteJsonLd} />
-        <SiteHeader />
+      <JsonLd data={siteJsonLd} />
+
+      <LayoutChrome PHONE_DISPLAY={PHONE_DISPLAY} PHONE_TEL={PHONE_TEL}>
         {children}
-        
-        {/* ✅ Floating lead bubble + modal */}
-        <LeadBubbleMount />
-        <SiteFooter />
-        <Analytics />
+      </LayoutChrome>
+
+      {/* ✅ Floating lead bubble + modal (disabled on /property-managers) */}
+      <ConditionalLeadBubbleMount />
+      <Analytics />
       </body>
     </html>
   );
