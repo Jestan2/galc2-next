@@ -247,6 +247,11 @@ export default function PropertyManagersClient() {
       window.fbq("track", "Lead");
     }
 
+        
+    if (typeof window !== "undefined" && typeof window.rdt === "function") {
+      window.rdt("track", "Lead");
+    }
+
     setSubmitted(true);
   } catch (err) {
     // no console logs/errors

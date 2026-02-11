@@ -10,6 +10,7 @@ import LeadBubbleMount from "./components/LeadBubbleMount";
 import LayoutChrome from "./components/LayoutChrome";
 import ConditionalLeadBubbleMount from "./components/ConditionalLeadBubbleMount";
 import MetaPixelTracker from "./components/MetaPixelTracker";
+import RedditPixelTracker from "./components/RedditPixelTracker";
 import { Suspense } from "react";
 import {
   BOOKING_URL,
@@ -80,6 +81,7 @@ export const metadata = {
 
 const GA_ID = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID;
 const META_PIXEL_ID = process.env.NEXT_PUBLIC_META_PIXEL_ID;
+const REDDIT_PIXEL_ID = process.env.NEXT_PUBLIC_REDDIT_PIXEL_ID;
 
 function PrimaryButton({ href, children, className = "" }) {
   return (
@@ -227,6 +229,10 @@ export default function RootLayout({ children }) {
 
       <Suspense fallback={null}>
         <MetaPixelTracker />
+      </Suspense>
+
+      <Suspense fallback={null}>
+        <RedditPixelTracker pixelId={REDDIT_PIXEL_ID} />
       </Suspense>
 
       <JsonLd data={siteJsonLd} />
