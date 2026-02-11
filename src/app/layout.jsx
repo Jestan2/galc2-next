@@ -9,6 +9,7 @@ import GA4Tracker from "./components/GA4Tracker";
 import LeadBubbleMount from "./components/LeadBubbleMount";
 import LayoutChrome from "./components/LayoutChrome";
 import ConditionalLeadBubbleMount from "./components/ConditionalLeadBubbleMount";
+import MetaPixelTracker from "./components/MetaPixelTracker";
 import { Suspense } from "react";
 import {
   BOOKING_URL,
@@ -78,6 +79,7 @@ export const metadata = {
 };
 
 const GA_ID = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID;
+const META_PIXEL_ID = process.env.NEXT_PUBLIC_META_PIXEL_ID;
 
 function PrimaryButton({ href, children, className = "" }) {
   return (
@@ -197,12 +199,34 @@ export default function RootLayout({ children }) {
             </Script>
           </>
         ) : null}
+        {META_PIXEL_ID ? (
+        <Script id="meta-pixel-base" strategy="afterInteractive">
+          {`
+            !function(f,b,e,v,n,t,s)
+            {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+            n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+            if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+            n.queue=[];t=b.createElement(e);t.async=!0;
+            t.src=v;s=b.getElementsByTagName(e)[0];
+            s.parentNode.insertBefore(t,s)}(window, document,'script',
+            'https://connect.facebook.net/en_US/fbevents.js');
+
+            fbq('init', '${META_PIXEL_ID}');
+            // NOTE: Do NOT auto-track PageView here in an SPA.
+            // MetaPixelTracker handles PageView on route changes.
+          `}
+        </Script>
+      ) : null}
       </head>
 
       <body className="min-h-screen bg-white text-slate-900 antialiased selection:bg-rose-100 selection:text-slate-900">
       {/* GA4 route-change pageviews */}
       <Suspense fallback={null}>
         <GA4Tracker gaId={GA_ID} />
+      </Suspense>
+
+      <Suspense fallback={null}>
+        <MetaPixelTracker />
       </Suspense>
 
       <JsonLd data={siteJsonLd} />

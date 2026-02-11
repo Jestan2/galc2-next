@@ -227,27 +227,31 @@ export default function PropertyManagersClient() {
       units: false,
     });
 
-    try {
-      const resp = await fetch(
-        `${process.env.NEXT_PUBLIC_API_ORIGIN || "http://localhost:8000"}/v1/leads/property-managers`,
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(data),
-        }
-      );
-
-      if (!resp.ok) {
-        // keep original behavior: do not change UI beyond field validation
-        return;
+  try {
+    const resp = await fetch(
+      `${process.env.NEXT_PUBLIC_API_ORIGIN || "http://localhost:8000"}/v1/leads/property-managers`,
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
       }
+    );
 
-      setSubmitted(true);
-    } catch (err) {
-      // no console logs/errors
+    if (!resp.ok) {
+      // keep original behavior: do not change UI beyond field validation
+      return;
+    }
+
+    // ✅ Track conversion on SUCCESS
+    if (typeof window !== "undefined" && typeof window.fbq === "function") {
+      window.fbq("track", "Lead");
     }
 
     setSubmitted(true);
+  } catch (err) {
+    // no console logs/errors
+    return;
+  }
   }
 
   return (
