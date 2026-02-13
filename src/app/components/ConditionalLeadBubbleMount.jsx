@@ -7,7 +7,10 @@ export default function ConditionalLeadBubbleMount() {
   const pathname = usePathname();
 
   const isPropertyManagers =
-    pathname === "/property-managers" || pathname.startsWith("/property-managers/");
+    pathname === "/property-managers" ||
+    pathname.startsWith("/property-managers/") ||
+    pathname === "/pm" ||
+    pathname.startsWith("/pm/");
 
   if (isPropertyManagers) return null;
 

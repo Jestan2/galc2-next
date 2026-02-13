@@ -104,7 +104,10 @@ export default function LayoutChrome({ children, PHONE_DISPLAY, PHONE_TEL }) {
 
   // ✅ Only affect this route (and any nested paths under it, if you ever add them)
   const isPropertyManagers =
-    pathname === "/property-managers" || pathname.startsWith("/property-managers/");
+    pathname === "/property-managers" ||
+    pathname.startsWith("/property-managers/") ||
+    pathname === "/pm" ||
+    pathname.startsWith("/pm/");
 
   return (
     <>
