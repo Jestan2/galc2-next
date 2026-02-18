@@ -655,6 +655,19 @@ function Card({ title, desc }) {
   );
 }
 
+function SparkIcon({ className = "" }) {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" className={className} aria-hidden="true">
+      <path
+        d="M12 2l1.6 6.1L20 10l-6.4 1.9L12 18l-1.6-6.1L4 10l6.4-1.9L12 2z"
+        stroke="currentColor"
+        strokeWidth="1.8"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
+
 function Stars({ n = 5 }) {
   return (
     <div className="flex items-center gap-1" aria-label={`${n} out of 5 stars`}>
@@ -944,11 +957,6 @@ export default async function ServiceCityLandingPage({ params }) {
             align="center"
             eyebrow="Why this works"
             title={`The easiest way to hire reliable labor in ${metro.city}`}
-            subtitle={valueProofSubtitle({
-            bucket,
-            city: metro.city,
-            serviceName: service.name,
-          })}
           />
 
           <div className="mt-10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -977,18 +985,24 @@ export default async function ServiceCityLandingPage({ params }) {
         </Container>
       </section>
 
-      {/* PERFECT FOR */}
+{/* PERFECT FOR (dark navy highlight for Moving pages) */}
+{(() => {
+  const isDark = 'true'
+
+  if (!isDark) {
+    // keep your current light version for non-moving buckets
+    return (
       <section className="py-16 bg-slate-50 border-y border-slate-200">
         <Container>
           <SectionTitle
             eyebrow="Popular bookings"
             title={`What people hire ${service.name.toLowerCase()} for in ${metro.city}`}
             subtitle={popularBookingsSubtitle({
-            bucket,
-            city: metro.city,
-            serviceName: service.name,
-            perfectFor: meta.perfectFor,
-          })}
+              bucket,
+              city: metro.city,
+              serviceName: service.name,
+              perfectFor: meta.perfectFor,
+            })}
           />
 
           <div className="mt-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -998,6 +1012,98 @@ export default async function ServiceCityLandingPage({ params }) {
           </div>
         </Container>
       </section>
+    );
+  }
+
+  // Dark navy “standout” version (Moving)
+  return (
+    <section className="relative py-16 overflow-hidden bg-slate-950 border-y border-slate-900">
+      {/* soft glow background */}
+      <div className="pointer-events-none absolute inset-0">
+        <div
+          className="absolute inset-0 opacity-100
+          bg-[radial-gradient(circle_at_20%_20%,rgba(56,189,248,0.20),rgba(15,23,42,0)_55%)]"
+        />
+        <div
+          className="absolute inset-0 opacity-100
+          bg-[radial-gradient(circle_at_80%_40%,rgba(99,102,241,0.18),rgba(15,23,42,0)_60%)]"
+        />
+        <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-sky-400/40 to-transparent" />
+      </div>
+
+      <Container className="relative">
+        {/* Title block (white text) */}
+        <div className="max-w-4xl mx-auto text-center">
+          <p className="text-xs uppercase tracking-[0.18em] text-sky-200/80">
+            Popular bookings
+          </p>
+
+          <h2 className="mt-2 font-bold leading-tight text-white text-[clamp(1.75rem,2.6vw,2.35rem)]">
+            {`What people hire ${service.name.toLowerCase()} for in ${metro.city}`}
+          </h2>
+
+          <p className="mt-3 text-sky-100/80 leading-relaxed text-[15px] sm:text-base">
+            {popularBookingsSubtitle({
+              bucket,
+              city: metro.city,
+              serviceName: service.name,
+              perfectFor: meta.perfectFor,
+            })}
+          </p>
+
+          {/* quick visual chips */}
+          <div className="mt-6 flex flex-wrap justify-center gap-2">
+            {meta.perfectFor.slice(0, 4).map((x) => (
+              <span
+                key={`chip-${x.t}`}
+                className="rounded-full border border-white/15 bg-white/5 px-4 py-2 text-xs font-semibold text-sky-50 backdrop-blur"
+              >
+                {x.t}
+              </span>
+            ))}
+          </div>
+        </div>
+
+        {/* Dark cards */}
+        <div className="mt-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          {meta.perfectFor.map((x, idx) => (
+            <div
+              key={x.t}
+              className="group relative rounded-3xl border border-white/10 bg-white/5 backdrop-blur p-6
+                        shadow-[0_10px_40px_rgba(0,0,0,0.25)] hover:bg-white/7 transition"
+            >
+              {/* subtle hover glow */}
+              <div className="pointer-events-none absolute inset-0 rounded-3xl opacity-0 group-hover:opacity-100 transition
+                              bg-[radial-gradient(circle_at_30%_20%,rgba(56,189,248,0.14),rgba(15,23,42,0)_55%)]" />
+
+              {/* badge (only first card) */}
+              {idx === 0 ? (
+                <div className="absolute right-5 top-5 z-10">
+                  <span className="inline-flex items-center rounded-full border border-sky-300/25 bg-sky-400/10 px-3 py-1 text-[11px] font-semibold text-sky-100">
+                    Most booked
+                  </span>
+                </div>
+              ) : null}
+
+              <div className="relative z-10 flex items-start gap-4">
+                <div className="h-11 w-11 shrink-0 rounded-2xl border border-sky-300/20 bg-sky-400/10 flex items-center justify-center">
+                  <SparkIcon className="h-5 w-5 text-sky-200" />
+                </div>
+
+                <div className="min-w-0">
+                  <p className="font-semibold text-white leading-snug">{x.t}</p>
+                  <p className="mt-2 text-sm leading-relaxed text-sky-100/75">
+                    {x.d}
+                  </p>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </Container>
+    </section>
+  );
+})()}
 
       {/* LABOR-ONLY EXPLAINED (super clean, no confusion) */}
       <section className="py-16">
@@ -1039,7 +1145,7 @@ export default async function ServiceCityLandingPage({ params }) {
             <div className="lg:col-span-4 rounded-3xl border border-slate-200/80 bg-white p-7 shadow-[0_1px_0_rgba(15,23,42,0.04)] flex flex-col">
               <p className="font-semibold text-slate-900">Fastest way to get a great crew</p>
               <p className="mt-2 text-sm text-slate-700 leading-relaxed">
-                Book online, leave clear notes, and we’ll handle the rest. That’s how you win “near me” urgency without stress.
+                Book online, leave clear notes, and we’ll handle the rest.
               </p>
 
               <div className="mt-6 flex flex-col gap-3">
@@ -1171,29 +1277,6 @@ export default async function ServiceCityLandingPage({ params }) {
         </Container>
       </section>
 
-      {/* POPULAR SEARCHES (helps match real query phrasing) */}
-      {popularSearches?.length ? (
-        <section className="py-16 border-t border-slate-100">
-          <Container>
-            <SectionTitle
-              eyebrow="Popular searches"
-              title={`Popular searches for ${service.name.toLowerCase()} in ${metro.city}`}
-              subtitle="These are common phrases people use when booking labor. If you're searching for any of these, you're in the right place."
-            />
-
-            <div className="mt-8 flex flex-wrap gap-2">
-              {popularSearches.map((t) => (
-                <span
-                  key={t}
-                  className="inline-flex items-center rounded-full border border-slate-200 bg-white px-4 py-2 text-sm text-slate-700 hover:border-slate-300 transition"
-                >
-                  {t}
-                </span>
-              ))}
-            </div>
-          </Container>
-        </section>
-      ) : null}
     </div>
   );
 }
