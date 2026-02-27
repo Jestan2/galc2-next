@@ -14,12 +14,12 @@ function DefaultHeader({ PHONE_DISPLAY, PHONE_TEL }) {
     <div className="sticky top-0 z-50">
       <header className="bg-white">
         <div className="mx-auto w-full px-4 sm:px-8 lg:px-10 xl:px-10">
-          <div className="flex h-[84px] sm:h-[92px] lg:h-[104px] items-center justify-between">
-            <Link href="/" className="flex items-center gap-3">
+          <div className="flex min-h-[78px] items-center justify-between gap-2 py-3 sm:h-[92px] sm:py-0 lg:h-[104px]">
+            <Link href="/" className="flex shrink-0 items-center">
               <img
                 src="/assets/Logo40.png"
                 alt="Great American Labor"
-                className="h-11 sm:h-12 md:h-14 lg:h-16 w-auto"
+                className="h-10 w-auto max-w-[96px] object-contain sm:h-12 sm:max-w-[140px] md:h-14 lg:h-16"
                 loading="eager"
                 decoding="async"
                 fetchPriority="high"
@@ -31,15 +31,16 @@ function DefaultHeader({ PHONE_DISPLAY, PHONE_TEL }) {
                 href={`tel:${PHONE_TEL}`}
                 className={[
                   "inline-flex items-center justify-center rounded-full font-semibold transition",
-                  "px-6 sm:px-8 lg:px-9 py-3 sm:py-3.5",
-                  "text-base sm:text-lg",
+                  "px-4 sm:px-8 lg:px-9 py-2.5 sm:py-3.5",
+                  "text-sm sm:text-lg",
                   "shrink-0 whitespace-nowrap",
                   "bg-white text-slate-900 border border-slate-200 hover:bg-slate-50 hover:border-slate-300",
                   "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rose-600 focus-visible:ring-offset-2 focus-visible:ring-offset-white",
                 ].join(" ")}
                 aria-label={`Call ${PHONE_DISPLAY}`}
               >
-                Call {PHONE_DISPLAY}
+                <span className="sm:hidden">Call</span>
+                <span className="hidden sm:inline">Call {PHONE_DISPLAY}</span>
               </a>
 
               <a
@@ -47,11 +48,12 @@ function DefaultHeader({ PHONE_DISPLAY, PHONE_TEL }) {
                 className={[
                   "inline-flex items-center justify-center rounded-full font-semibold transition",
                   "bg-slate-900 text-white shadow-sm hover:bg-slate-800",
-                  "shrink-0 text-base sm:text-lg px-6 sm:px-8 lg:px-9 py-3 sm:py-3.5 whitespace-nowrap",
+                  "shrink-0 text-sm sm:text-lg px-4 sm:px-8 lg:px-9 py-2.5 sm:py-3.5 whitespace-nowrap",
                   "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rose-600 focus-visible:ring-offset-2",
                 ].join(" ")}
               >
-                For Businesses
+                <span className="sm:hidden">Business</span>
+                <span className="hidden sm:inline">For Businesses</span>
               </a>
             </div>
           </div>
@@ -66,12 +68,12 @@ function PropertyManagersHeader() {
     <div className="sticky top-0 z-50">
       <header className="bg-white">
         <div className="mx-auto w-full px-4 sm:px-8 lg:px-10 xl:px-10">
-          <div className="flex h-[84px] sm:h-[92px] lg:h-[104px] items-center justify-between">
-            <Link href="/" className="flex items-center gap-3">
+          <div className="flex min-h-[78px] items-center justify-between gap-2 py-3 sm:h-[92px] sm:py-0 lg:h-[104px]">
+            <Link href="/" className="flex shrink-0 items-center">
               <img
                 src="/assets/Logo40.png"
                 alt="Great American Labor"
-                className="h-11 sm:h-12 md:h-14 lg:h-16 w-auto"
+                className="h-10 w-auto max-w-[96px] object-contain sm:h-12 sm:max-w-[140px] md:h-14 lg:h-16"
                 loading="eager"
                 decoding="async"
                 fetchPriority="high"
@@ -82,15 +84,16 @@ function PropertyManagersHeader() {
               href={`tel:${PM_PHONE_TEL}`}
               className={[
                 "inline-flex items-center justify-center rounded-full font-semibold transition",
-                "px-6 sm:px-8 lg:px-9 py-3 sm:py-3.5",
-                "text-base sm:text-lg",
+                "px-4 sm:px-8 lg:px-9 py-2.5 sm:py-3.5",
+                "text-sm sm:text-lg",
                 "shrink-0 whitespace-nowrap",
                 "bg-white text-slate-900 border border-slate-200 hover:bg-slate-50 hover:border-slate-300",
                 "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rose-600 focus-visible:ring-offset-2 focus-visible:ring-offset-white",
               ].join(" ")}
               aria-label={`Call ${PM_PHONE_DISPLAY}`}
             >
-              Call {PM_PHONE_DISPLAY}
+              <span className="sm:hidden">Call</span>
+              <span className="hidden sm:inline">Call {PM_PHONE_DISPLAY}</span>
             </a>
           </div>
         </div>
