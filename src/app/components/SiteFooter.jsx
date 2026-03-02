@@ -123,7 +123,7 @@ export default function SiteFooter() {
               <div className="mt-3 flex flex-col gap-2.5">
                 <FooterLink href="/services">Services</FooterLink>
                 <FooterLink href="/locations">Locations</FooterLink>
-                <ExternalLink href={BOOKING_URL}>Booking</ExternalLink>
+                <ExternalLink href={BOOKING_URL}>Portal</ExternalLink>
               </div>
             </div>
 
