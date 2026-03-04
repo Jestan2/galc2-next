@@ -83,7 +83,6 @@ export const metadata = {
 const GA_ID = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID;
 const META_PIXEL_ID = process.env.NEXT_PUBLIC_META_PIXEL_ID;
 const REDDIT_PIXEL_ID = process.env.NEXT_PUBLIC_REDDIT_PIXEL_ID;
-const APOLLO_TRACKER_APP_ID = process.env.NEXT_PUBLIC_APOLLO_TRACKER_APP_ID;
 
 function PrimaryButton({ href, children, className = "" }) {
   return (
@@ -239,7 +238,7 @@ export default function RootLayout({ children }) {
         <RedditPixelTracker pixelId={REDDIT_PIXEL_ID} />
       </Suspense>
 
-      <ApolloTracker appId={APOLLO_TRACKER_APP_ID} />
+      <ApolloTracker />
 
       <JsonLd data={siteJsonLd} />
 
